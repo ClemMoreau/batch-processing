@@ -8,11 +8,11 @@
 		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>batch-processing</artifactId>
+	<groupId>example</groupId>
+	<artifactId>billing-job</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>batch-processing</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Billing Job</name>
+	<description>Billing job for Spring Cellular</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -23,8 +23,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
