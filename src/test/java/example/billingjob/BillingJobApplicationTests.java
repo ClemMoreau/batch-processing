@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
+
 @SpringBootTest
 @ExtendWith(OutputCaptureExtension.class)
 class BillingJobApplicationTests {
@@ -23,10 +24,12 @@ class BillingJobApplicationTests {
 	@Test
 	void testJobExecution(CapturedOutput output) throws Exception {
 
-		JobParameters jobParameters = new JobParameters();
+		JobParameters jobParameters = new JobParametersBuilder()
+				.addString("input.file", "/some/input/file")
+				.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 
-		Assertions.assertTrue(output.getOut().contains("processing billing information"));
+		Assertions.assertTrue(output.getOut().contains("processing billing information from file /some/input/file"));
 		Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
 	}
 
