@@ -73,12 +73,17 @@ public class BillingJobConfiguration {
                       JdbcTransactionManager transactionManager,
                       ItemReader<BillingData> billingDataTableReader,
                       ItemProcessor<BillingData, ReportingData> billingDataProcessor,
-                      ItemWriter<ReportingData> billingDataFileWriter) {
+                      ItemWriter<ReportingData> billingDataFileWriter,
+                      PrincingListener princingListener) {
         return new StepBuilder("reportGeneration", jobRepository)
                 .<BillingData, ReportingData>chunk(100, transactionManager)
                 .reader(billingDataTableReader)
                 .processor(billingDataProcessor)
                 .writer(billingDataFileWriter)
+                .faultTolerant()
+                .retry(PricingException.class)
+                .retryLimit(100)
+                .listener(princingListener)
                 .build();
     }
 
@@ -120,8 +125,8 @@ public class BillingJobConfiguration {
     }
 
     @Bean
-    public BillingDataProcessor billingDataProcessor() {
-        return new BillingDataProcessor();
+    public BillingDataProcessor billingDataProcessor(PricingService pricingService) {
+        return new BillingDataProcessor(pricingService);
     }
 
     @Bean
